@@ -18,7 +18,7 @@ import com.loja.eletro.model.Produto;
 import com.loja.eletro.repository.ProdutoRepository;
 
 @RestController
-@RequestMapping(name = "/produtos")
+@RequestMapping("/produtos")
 public class ProdutoController {
 	@Autowired
 	public ProdutoRepository repository;
@@ -26,6 +26,16 @@ public class ProdutoController {
 	@GetMapping
 	public ResponseEntity<List<Produto>> findAllProdutos() {
 		return ResponseEntity.ok(repository.findAll());
+	}
+
+	@GetMapping("/range/{valorIni}/{valorFim}")
+	public ResponseEntity<List<Produto>> findByPreco(@PathVariable double valorIni, @PathVariable double valorFim) {
+		return ResponseEntity.ok(repository.findByPrecoBetween(valorIni, valorFim));
+	}
+
+	@GetMapping("/tipopreco/{id}/{preco}")
+	public ResponseEntity<List<Produto>> findByPrecoTipo(@PathVariable long id, @PathVariable double preco) {
+		return ResponseEntity.ok(repository.findByTipoEletroIdAndPrecoLessThanEqual(id, preco));
 	}
 
 	@GetMapping("/{id}")

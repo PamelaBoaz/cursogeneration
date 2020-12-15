@@ -1,11 +1,17 @@
 package com.loja.eletro.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "tb_tipos")
@@ -18,10 +24,10 @@ public class TipoEletro {
 	@NotNull
 	private Boolean ativo;
 
-	public Long getId() {
-		return id;
-	}
-
+	@OneToMany(mappedBy = "tipoEletro", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("tipoEletro")
+	private List<Produto> listaProdutos;
+	
 	public TipoEletro() {
 
 	}
@@ -37,6 +43,18 @@ public class TipoEletro {
 		this.id = id;
 		this.descricao = descricao;
 		this.ativo = ativo;
+	}
+
+	public List<Produto> getListaProdutos() {
+		return listaProdutos;
+	}
+
+	public void setListaProdutos(List<Produto> listaProdutos) {
+		this.listaProdutos = listaProdutos;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public void setId(Long id) {
